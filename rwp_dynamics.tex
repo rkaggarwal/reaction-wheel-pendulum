@@ -1,0 +1,136 @@
+\documentclass[12pt]{article}
+\usepackage{amsfonts}
+\usepackage{booktabs}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{gensymb}
+\usepackage{cite}
+\usepackage{sectsty}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{subfig}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{tikz}
+\usepackage{fixltx2e}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage[normalem]{ulem}
+\newcommand{\msout}[1]{\text{\sout{\ensuremath{#1}}}}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\newenvironment{conditions}
+  {\par\vspace{\abovedisplayskip}\noindent\begin{tabular}{>{$}l<{$} @{${}={}$} l}}
+  {\end{tabular}\par\vspace{\belowdisplayskip}}
+
+\setlength\parindent{0pt}
+\usepackage{gensymb}
+\begin{document}
+
+\section*{Reaction Wheel Pendulum Dynamics}
+To obtain the equations of motion for the system, a Lagrangian approach is used.  First, the energies and virtual work of the system are computed:
+
+\begin{align*}
+	KE_{\,1} &= \frac{1}{2}m_1\left(\frac{l_1}{2}\dot{q_1}\right)^2 + \frac{1}{2}J_1\dot{q_1}^2 \\
+	KE_{\,2} &= \frac{1}{2}m_2\left(l_1\dot{q_1}\right)^2 + \frac{1}{2}J_2\left(\dot{q_1}+ \dot{q_2}\right)^2\\
+	\bigskip\bigskip\bigskip
+	PE_{\,1} &= m_1\,g\,\frac{l_1}{2}\,\text{cos}(q_1) \\
+	PE_{\,2} &= m_2\,g\,l_1\,\text{cos}(q_1) \\
+	dW &= \tau_{motor}\,dq_2
+\end{align*}
+
+where
+\bigskip
+
+\begin{conditions}
+KE_{\,1} & kinetic energy of the link \\
+KE_{\,2} & kinetic energy of the flywheel \\
+PE_{\,1} & potential energy of the link, link pivot point is at zero height\\
+PE_{\,2} & potential energy of the flywheel, link pivot point is at zero height \\
+m_1 & mass of the link \\
+m_2 & mass of the flywheel \\
+J_1 & rotational inertia of the link \\
+J_2 & rotational inertia of the flywheel \\
+q_1 & angle of the link, tared at the directly inverted position \\
+q_2 & angle of the flywheel with respect to the link \\
+l_1 & length of the link \\
+g & gravitational acceleration \\
+
+
+\end{conditions}
+
+
+\bigskip Then, the following Lagrangians are evaluated in terms of the two generalized coordinates, $q_1$ and $q_2$:
+
+\begin{align*}
+	\frac{d}{dt} \left( \frac{\partial L}{\partial \dot{q_1}}\right) - \frac{\partial L}{\partial q_1} &= 0  \\
+	\frac{d}{dt} \left( \frac{\partial L}{\partial \dot{q_2}}\right) - \frac{\partial L}{\partial q_2} &= \tau 
+\end{align*}
+
+From simplifying these equations, the (messy) equations of motion are finally derived:
+
+
+\begin{align*}
+	\ddot{q_1} &= \frac{(m_1 g \frac{l_1}{2} + m_2 g l_1)q_1 - \tau}{m_1 \frac{l_1^2}{4} + J_1 + m_2 l_1^2} \\
+	\ddot{q_2} &= \frac{(m_1 g \frac{l_1}{2} + m_2 g l_1)q_1 - \frac{m_1\frac{l_1^2}{4} + J_1 + m_2 l_1^2 + J_2}{J_2}\tau}{-m_1 \frac{l_1^2}{4} - J_1 - m_2 l_1^2} \\
+\end{align*}
+
+Instead of clearing denominators, we'll make a few substitutions.  Letting
+
+\begin{align*}
+	a &= m_1 \frac{l_1^2}{4} + J_1 + m_2 l_1^2 + J_2, \,\text{and} \\
+	b &= m_1 g \frac{l_1}{2} + m_2 g l_1, \\
+\end{align*}
+
+the equations simplify to:
+
+\begin{align*}
+	\ddot{q_1} &= \frac{b q_1 - \tau}{a-J_2} \\
+	\ddot{q_2} &= \frac{b q_1 - \frac{a}{J_2} \tau}{J_2 - a}
+\end{align*}
+
+which, when written in state space form, takes on the following representation:
+
+\begin{equation*}
+\begin{pmatrix} 
+\dot{q_1}  \\
+\dot{q_2} \\
+\ddot{q_1} \\
+\ddot{q_2} \\ 
+\end{pmatrix}
+= 
+\begin{pmatrix}
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1 \\
+\frac{b}{J_2-a} & 0 & 0 & 0 \\
+\frac{b}{J_2 - a} & 0 & 0 & 0
+\end{pmatrix}
+\begin{pmatrix} 
+q_1  \\
+q_2 \\
+\dot{q_1} \\
+\dot{q_2} \\ 
+\end{pmatrix}
++ 
+\begin{pmatrix}
+0 \\
+0 \\
+\frac{-1}{a-J_2} \\
+\frac{-a}{J_2(J_2 - a)}\\
+\end{pmatrix}
+\tau_{motor}
+\end{equation*}
+\bigskip
+
+This state-space form is ultimately used in the controller simulations in Python using the
+ \href{https://pypi.org/project/control/}{Control Systems Library (link)}.
+
+
+
+
+
+
+\end{document}
+
