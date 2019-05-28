@@ -69,7 +69,7 @@ g & gravitational acceleration \\
 	\frac{d}{dt} \left( \frac{\partial L}{\partial \dot{q_2}}\right) - \frac{\partial L}{\partial q_2} &= \tau 
 \end{align*}
 
-From simplifying these equations, the (messy) equations of motion are finally derived:
+From simplifying these equations, and linearizing about $q_1 = 0$, the (messy) equations of motion are finally derived:
 
 
 \begin{align*}
@@ -124,8 +124,7 @@ q_2 \\
 \end{equation*}
 \bigskip
 
-This state-space form is ultimately used in the controller simulations in Python using the
- \href{https://pypi.org/project/control/}{Control Systems Library (link)}.
+This state-space form is ultimately used in the controller simulations in Python using the Control Systems Library (https://pypi.org/project/control/).
 
 
 
